@@ -35,7 +35,8 @@ class FormValidator {
     }
 
     _hasInvalidInput() {
-        return this._inputList.some(inputElement => !inputElement.validity.valid);
+        // Check if any input is invalid or if any input is empty
+        return this._inputList.some(inputElement => !inputElement.validity.valid || inputElement.value.trim() === '');
     }
 
     _toggleButtonState() {
@@ -49,7 +50,7 @@ class FormValidator {
     }
 
     _setEventListeners() {
-        this._toggleButtonState(); 
+        this._toggleButtonState();
 
         this._inputList.forEach(inputElement => {
             inputElement.addEventListener("input", () => {
@@ -57,11 +58,16 @@ class FormValidator {
                 this._toggleButtonState();
             });
         });
+
+        this._formEl.addEventListener("reset", () => {
+            this.resetValidation(); // Reset the form validation when form is reset
+        });
     }
 
     enableValidation() {
         this._formEl.addEventListener("submit", (evt) => {
-            evt.preventDefault(); 
+            evt.preventDefault(); // Prevent the form from submitting
+            this._toggleButtonState(); // Re-disable the button after submission
         });
         this._setEventListeners();
     }
@@ -71,7 +77,7 @@ class FormValidator {
             this._hideInputError(inputElement);
             inputElement.value = ''; 
         });
-        this._toggleButtonState();
+        this._toggleButtonState(); // Ensure the button is disabled after resetting the form
     }
 }
 
