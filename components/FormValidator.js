@@ -35,7 +35,6 @@ class FormValidator {
     }
 
     _hasInvalidInput() {
-        // Check if any input is invalid or if any input is empty
         return this._inputList.some(inputElement => !inputElement.validity.valid || inputElement.value.trim() === '');
     }
 
